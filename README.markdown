@@ -1,5 +1,7 @@
 # INSTALLATION
 
+This projet was inspired of ``RemoteUser`` (middleware and backend from Django).
+
 ## Tools
 
 * Python/Django
