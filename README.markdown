@@ -1,24 +1,29 @@
-I. INSTALLATION
+# INSTALLATION
 
-I.a Tools
+This projet was inspired of ``RemoteUser`` (middleware and backend from Django).
+
+## Tools
 
 * Python/Django
 * LemonLDAP::NG
 * apache2 + mod_wsgi
 
-I.b Get the source
+## Get the source
 
 Copy the site files :
 
+```
 $ cd /var/www
 $ git clone git://github.com/9h37/django-lemonldap.git
+```
 
-II. CONFIGURATION
+# CONFIGURATION
 
-II.a Apache2
+## Apache2
 
 Copy that into /etc/apache2/django.conf :
 
+```
 <VirtualHost *:80>
 	ServerName django.9h37-test.fr
 
@@ -36,8 +41,9 @@ Copy that into /etc/apache2/django.conf :
 		Allow from all
 	</Directory>
 </VirtualHost>
+```
 
-II.b LemonLDAP
+## LemonLDAP
 
 Add a new virtual host : django.9h37-test.fr
 Add new HTTP header :
@@ -48,9 +54,11 @@ Add new HTTP header :
 
 Be sure that cn, uid and mail are exported :
 
+```
 .
 `-+ Variables
   `-+ Attributes to export
     |-- cn = cn
     |-- uid = uid
     `-- mail = mail
+```
