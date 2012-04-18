@@ -10,6 +10,17 @@ class LemonLDAPBackend(ModelBackend):
     By default, the ``authenticate`` method creates ``User`` objects for
     usernames that don't already exist in the database. Subclasses can disable
     this behavior by setting the ``create_unknown_user`` attribute to ``False``.
+
+    You can subclass the backend and re-implement the function ``configure_user()``
+    if you use different (or more) headers in the middleware :
+
+        def configure_user(self, user, remote_userinfo):
+            user.email = remote_userinfo['mail']
+            user.first_name = remote_userinfo["name"].split(' ')[0]
+            user.last_name  = remote_userinfo["name"].split(' ')[1]
+            return user
+
+    The keys used in the dict are the keys defined in the middleware ``headers`` variable.
     """
 
     # Create a User object if not already in the database?

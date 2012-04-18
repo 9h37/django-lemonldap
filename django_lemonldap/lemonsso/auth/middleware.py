@@ -11,16 +11,22 @@ class LemonLDAPMiddleware(object):
     If authentication is successful, the user is automatically logged in to
     persist the user in the session.
 
-    The headers ``HTTP_AUTH_MAIL`` and ``HTTP_AUTH_REALNAME`` are getted
-    to pass informations about the user to the authentication backend.
+    You can subclass the middleware and change ``headers`` to use different (or
+    more) headers :
 
-    You can subclass the middleware and change ``header_username``,
-    ``header_mail`` and ``header_realname`` if you need to use a different header.
+        headers = [
+            # Key in the dict / HTTP header
+            ('username', 'HTTP_AUTH_USER'),
+            ('mail', 'HTTP_AUTH_MAIL'),
+            ('name', 'HTTP_AUTH_NAME'),
+        ]
     """
 
-    header_username = "HTTP_AUTH_USER"
-    header_mail     = "HTTP_AUTH_MAIL"
-    header_realname = "HTTP_AUTH_NAME"
+    headers = [
+        ('username', 'HTTP_AUTH_USER'),
+        ('mail', 'HTTP_AUTH_MAIL'),
+        ('name', 'HTTP_AUTH_NAME'),
+    ]
 
     def process_request(self, request):
         # AuthenticationMiddleware is required so that request.user exists.
@@ -33,11 +39,10 @@ class LemonLDAPMiddleware(object):
                     " before the LemonLDAPMiddleware class.")
 
         try:
-            userinfo = {
-                'username': request.META[self.header_username],
-                'mail':     request.META[self.header_mail],
-                'name':     request.META[self.header_realname]
-            }
+            userinfo = {}
+
+            for header in self.headers:
+                userinfo[header[0]] = request.META[header[1]]
         except KeyError:
             # If specified header doesn't exist then return (leaving
             # request.user set to AnonymousUser by the AuthenticationMiddleware).
