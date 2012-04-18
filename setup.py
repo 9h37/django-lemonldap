@@ -2,21 +2,6 @@
 
 from distutils.core import setup
 
-import os
-import glob
-
-def tree(path):
-    files = []
-
-    for f in glob.iglob(path + '/*'):
-        if os.path.isdir(f):
-            files = files + tree(f)
-        else:
-            files.append(f)
-
-    return files
-
-
 setup(
     name='Django-LemonLDAP',
     version='0.1',
@@ -29,6 +14,10 @@ setup(
     packages = ['django_lemonldap.lemonsso.auth'],
 
     data_files=[
+        ('/etc/apache2/sites-enabled/', [
+            'django_lemonldap/apache/django-test.conf'
+        ]),
+
         ('share/django-lemonldap/apache/', [
             'django_lemonldap/apache/__init__.py',
             'django_lemonldap/apache/django.wsgi',
